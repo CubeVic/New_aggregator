@@ -24,7 +24,7 @@ class News:
 			sort_by: str = "",
 			page_size: int = 100,
 			page: int = 1):
-
+		"""Fetch the news from /v2/everything"""
 		url = self.base_url + self.everything
 		param = {
 			'q': q,
