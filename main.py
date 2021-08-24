@@ -42,7 +42,7 @@ class News:
 			'page': page
 		}
 
-		return self.session.get(url=url, params=param)
+		return self.session.get(url=url, params=param).text
 
 	def fetch_to_headlines(
 			self,
@@ -63,7 +63,7 @@ class News:
 			'page': page
 		}
 
-		return self.session.get(url=url, params=param)
+		return self.session.get(url=url, params=param).text
 
 	def fetch_to_headlines_source(
 			self,
@@ -77,35 +77,19 @@ class News:
 			'language': language,
 			'country': country
 		}
-		return self.session.get(url=url, params=param)
+		return self.session.get(url=url, params=param).text
 
 
 if __name__ == '__main__':
-
 	today = datetime.date.today()
 	yesterday = today - datetime.timedelta(days=1)
 	older = today - datetime.timedelta(days=4)
-	st = News()
 	topic = input("Topic to search: ")
-	content = json.loads(st.fetch_new(q=topic, time_from=older, time_to=today).text)
+
+	st = News()
+	content = json.loads(st.fetch_new(q=topic, time_from=older, time_to=today, language="en"))
+
 	articles = content['articles']
-	#
-	# keys = ['source','author','title','description','url','urlToImage','publishedAt','content']
-
-	# print(f"content \n{articles}")
-	info = {}
-	for article in articles:
-		info['publishedAt'] = article['publishedAt']
-		info['Name'] = article['source']['name']
-		info['title'] = article['title']
-		info['Author'] = article['author']
-		info['description'] = article['description']
-		info['description'] = article['content']
-		# print(f"Name: {article['source']['name']}")
-		# print(f"title: {article['title']}")
-		# print(f"Author: {article['author']}")
-		# print(f"description: {article['description']}")
-		# print(f"content: {article['content']}")
-
-	print(len(info))
+	df_original = pd.DataFrame.from_dict(articles)
+	df_original.to_csv('original_data.csv')
 
