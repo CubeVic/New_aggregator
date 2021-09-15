@@ -24,10 +24,21 @@ The idea is to have an outcome, either a list on an excel, a list by email, or a
 
 * [NewsAPI](https://newsapi.org/docs) - The News API
 
+## Changelog
+
+|version | Date | Description|
+|:-----|:-------:|:----------|
+|0.1.0 | 20210914| Moving NewsAPI related code to independent file.|
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+**MAYOR.MINOR.PATCH**
+
+* MAJOR version when you make incompatible API changes,
+* MINOR version when you add functionality in a backwards compatible manner, and
+* PATCH version when you make backwards compatible bug fixes.  
+
+I use [SemVer](http://semver.org/) for versioning. 
 
 ## Authors
 
