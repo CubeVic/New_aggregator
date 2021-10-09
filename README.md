@@ -11,6 +11,7 @@ Every morning I read news, news coming for morning brew email, and the Google al
 ## The Idea
 
 The idea is to have an outcome, either a list on an excel, a list by email, or a list on telegram every morning with the most important news.
+
 ![The_idea](The_idea.png)
 
 ## Getting Started

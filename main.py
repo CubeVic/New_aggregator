@@ -1,11 +1,11 @@
-
-from news import News
-import json
+from newsapi import NewsApiClient
+from secrets import APIKEY
 import datetime
-import pandas as pd
+
 
 
 if __name__ == '__main__':
+
 	# get timeframe
 	today = datetime.date.today()
 	yesterday = today - datetime.timedelta(days=1)
@@ -14,11 +14,23 @@ if __name__ == '__main__':
 	#topic to search
 	topic = input("Topic to search: ")
 
+	#fetch API
+	api = NewsApiClient(api_key=APIKEY)
 	#fetch info
-	st = News(time_from=older, time_to=today)
-	content = json.loads(st.fetch_new(q=topic, language="en"))
-	articles = content['articles']
+	all_news = api.get_everything(
+		q=topic,
+		sources='bbc-news,the-verge',
+		domains='bbc.co.uk,techcrunch.com',
+		from_param=older,
+		to=today,
+		language='en',
+		sort_by='relevancy',
+		page=1)
 
-	#parce information
-	df_original = pd.DataFrame.from_dict(articles)
-	df_original.to_csv('original_data.csv')
+	for i in all_news['articles'][:3]:
+		for k, v in i.items():
+			v = v['name'] if 'source' in k else v
+			if k in ('content', 'urlToImage'):
+				continue
+			print(f'{k}: {v}')
+		print('-' * 10)
