@@ -3,16 +3,14 @@
 
 This is an implementation of a news aggregator using the API `NewsAPI`.
 
-## WHY
+## Why I want News aggregator
 
-Every morning I read news, news coming for morning brew email, and the Google alerts, additionally, browse websites like Yahoo Finance and some Taiwan digital newspaper. Consuming media in this way, is at best, consuming time, and prompt distractions, coming from different sources.
-![why](why.png)
+Every morning I read news, news coming for morning brew email, and the Google alerts, additionally, browse websites like Yahoo Finance and some Taiwan digital newspaper. Consuming media in this way, is at best, consuming time, and prompt distractions, coming from different sources.  
 
 ## The Idea
+![The_idea](The_idea.png)
 
 The idea is to have an outcome, either a list on an excel, a list by email, or a list on telegram every morning with the most important news.
-
-![The_idea](The_idea.png)
 
 ## Getting Started
 
@@ -30,6 +28,7 @@ The idea is to have an outcome, either a list on an excel, a list by email, or a
 |version | Date | Description|
 |:-----|:-------:|:----------|
 |0.1.0 | 20210914| Moving NewsAPI related code to independent file.|
+|0.2.0 | 20211011| Stat using the unofficial python client for news API|
 
 ## Versioning
 
