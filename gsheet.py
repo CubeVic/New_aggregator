@@ -1,3 +1,7 @@
+"""
+Description:
+    Implementation client Google sheet API
+"""
 from __future__ import print_function
 import os.path
 
@@ -12,9 +16,14 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis
 
 
 def fetch_service():
-    """Shows basic usage of the Sheets API.
-        Prints values from a sample spreadsheet.
-        """
+    """fetch the google service object
+
+    :arg
+        None
+
+    :return
+        Google services object
+    """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -58,6 +67,14 @@ def fetch_service():
 
 
 def create_spreadsheet(service, title, sheets_names):
+    """
+    Create a new speadsheet
+
+    :param service: Google Services object
+    :param title: Title of the spreadsheet
+    :param sheets_names: list with all names for tabs
+    :return: spreadsheet ID
+    """
     sheets = []
     counter = 0
     for sheet in sheets_names:
@@ -83,6 +100,14 @@ def create_spreadsheet(service, title, sheets_names):
 
 
 def write_single(service, spreadsheet_ID, range, values):
+    """
+    Write in the spreadsheet
+    :param service: Google services object
+    :param spreadsheet_ID: spreadsheet ID
+    :param range: range of cell where to write, using A1 notation
+    :param values: the information to be written in the spreadsheet
+    :return: string confirmation with amount of cells modified
+    """
     values = generate_values(values)
     body = {
         'values': values
@@ -97,6 +122,11 @@ def write_single(service, spreadsheet_ID, range, values):
 
 
 def generate_values(raw_data):
+    """
+    Take the raw data from newsapi and divided in columns and values, create a list of list containing the information
+    :param raw_data: raw data
+    :return: list of list, first item is the columns names, following lists is the data of the articles
+    """
     news = [list(value.values()) for _, value in raw_data.items()]
     columns = list(raw_data[1].keys())
     return [columns] + news

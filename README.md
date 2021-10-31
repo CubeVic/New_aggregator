@@ -28,7 +28,8 @@ The idea is to have an outcome, either a list on an excel, a list by email, or a
 |version | Date | Description|
 |:-----|:-------:|:----------|
 |0.1.0 | 20210914| Moving NewsAPI related code to independent file.|
-|0.2.0 | 20211011| Stat using the unofficial python client for news API|
+|0.2.0 | 20211011| Started using the unofficial python client for news API|
+|0.3.0 | 20211131| Pre-alpa: Fetch news and write them in a spreadsheet |
 
 ## Versioning
 
