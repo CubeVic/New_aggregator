@@ -1,27 +1,31 @@
 ![New_Aggregator](News_Aggregator_02.png)
 # News Aggregator
 
-This is an implementation of a news aggregator using the API `NewsAPI`.
+News aggregator that fetch news form Newsapi and writhe the results in a Google spreadsheet.
 
 ## Why I want News aggregator
 
-Every morning I read news, news coming for morning brew email, and the Google alerts, additionally, browse websites like Yahoo Finance and some Taiwan digital newspaper. Consuming media in this way, is at best, consuming time, and prompt distractions, coming from different sources.  
+Every morning I read news, to find the news I browse several sites, and in some cases end spending more time scrolling o the sites that reading the news.  
 
 ## The Idea
 ![The_idea](The_idea.png)
 
-The idea is to have an outcome, either a list on an excel, a list by email, or a list on telegram every morning with the most important news.
+A spreadsheet with different sheets, one sheet per topic. Each sheet contain the 4 most relevant news about a topic. In the sheet each row will represent and article, there will be columns with information such as author, source, summery and link to the full article.
 
 ## Getting Started
 
 1. Install the libraries.
-2. Gather the topics I want to get information from 
-3. Execute the scrip **[Working on the next steps]**
+2. define the topics to search
+3. Get the Google sheets API token as well as NewsAPI key.
+4. Execute the scrip.
+
+> for now the script contain hardcoded values, but again, this meant to be a personal project, I will work on it.
 
 
 ## Built With
 
 * [NewsAPI](https://newsapi.org/docs) - The News API
+* [Google Sheets](https://developers.google.com/sheets/api?hl=ru) - Sheets API
 
 ## Changelog
 
