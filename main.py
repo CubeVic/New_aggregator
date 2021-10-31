@@ -37,7 +37,7 @@ if __name__ == '__main__':
     # topic to search
     # topics = input("Topic to search (separated by commas): ").split(",")
     topics = ['BTC', 'ADA', 'FTM', 'SOLANA','MATIC','ALGO', 'DOT', 'USDT', 'Silver prices']
-    sheet_id = 0
+
 
     SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{today}', sheets_names=topics)
     print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
@@ -55,4 +55,4 @@ if __name__ == '__main__':
 
         news = display_news(all_news)
         gsheet.write_single(service, SPREADSHEET_ID, f'{topic}!A1:Z30', news)
-        sheet_id += 1
+
