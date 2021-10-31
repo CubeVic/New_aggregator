@@ -35,7 +35,8 @@ if __name__ == '__main__':
     service = gsheet.fetch_service()
 
     # topic to search
-    topics = input("Topic to search (separted by commas): ").split(",")
+    # topics = input("Topic to search (separated by commas): ").split(",")
+    topics = ['BTC', 'ADA', 'FTM', 'SOLANA','MATIC','ALGO', 'DOT', 'USDT', 'Silver prices']
     sheet_id = 0
 
     SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{today}', sheets_names=topics)
