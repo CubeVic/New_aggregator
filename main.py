@@ -41,17 +41,20 @@ if __name__ == '__main__':
     # topics = input("Topic to search (separated by commas): ").split(",")
     topics = ['Bitcoin', 'Cardano', 'Fantom', 'Solana','Polygon','Algorand', 'Polkadot', 'USDT', 'Silver prices']
 
-    #TODO: this implementation can be improve
-    file_exist = exists('logs.txt')
-    if file_exist:
-        with open('logs.txt','+r') as file:
-            logs = file.readline()
-            if f"{today}" in logs:
-                SPREADSHEET_ID = logs.split(':')[1]
-            else:
-                SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{today}', sheets_names=topics)
-                print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
-                file.write(f"{today}:{SPREADSHEET_ID}")
+    #TODO: this implementation can be improve or move to gsheeet script
+    is_exist = exists('logs.txt')
+    if is_exist is False:
+        with open('logs.txt', 'w') as file:
+            print('New logs.txt file created')
+
+    with open('logs.txt', '+r') as file:
+        logs = file.readline()
+        if f"{today}" in logs:
+            SPREADSHEET_ID = logs.split(':')[1]
+        else:
+            SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{today}', sheets_names=topics)
+            print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
+            file.write(f"{today}:{SPREADSHEET_ID}")
 
     for topic in topics:
         # fetch info
