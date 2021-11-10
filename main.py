@@ -1,7 +1,10 @@
+import os
+
 from newsapi import NewsApiClient
 from secrets import APIKEY
 import datetime
 import gsheet
+from os.path import exists
 
 
 def display_news(all_news) -> dict:
@@ -36,17 +39,24 @@ if __name__ == '__main__':
 
     # topic to search
     # topics = input("Topic to search (separated by commas): ").split(",")
-    topics = ['BTC', 'ADA', 'FTM', 'SOLANA','MATIC','ALGO', 'DOT', 'USDT', 'Silver prices']
+    topics = ['Bitcoin', 'Cardano', 'Fantom', 'Solana','Polygon','Algorand', 'Polkadot', 'USDT', 'Silver prices']
 
+    #TODO: this implementation can be improve
+    file_exist = exists('logs.txt')
+    if file_exist:
+        with open('logs.txt','+r') as file:
+            logs = file.readline()
+            if f"{today}" in logs:
+                SPREADSHEET_ID = logs.split(':')[1]
+            else:
+                SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{today}', sheets_names=topics)
+                print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
+                file.write(f"{today}:{SPREADSHEET_ID}")
 
-    SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{today}', sheets_names=topics)
-    print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
     for topic in topics:
         # fetch info
         all_news = api.get_everything(
             q=topic,
-            # sources='bbc-news,the-verge',
-            # domains='bbc.co.uk,techcrunch.com',
             from_param=older,
             to=today,
             language='en',
