@@ -19,10 +19,10 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis
 def fetch_service():
     """fetch the google service object
 
-    :arg
+    Args:
         None
 
-    :return
+    Returns:
         Google services object
     """
     creds = None
@@ -47,34 +47,16 @@ def fetch_service():
     return service
 
 
-# def create_spreadsheet(service, title):
-#     spreadsheet = {
-#         'properties': {
-#             'title': title
-#         },
-#         'sheets': [
-#             {
-#                 'properties': {
-#                     "sheetId": 0,
-#                     "title": 'first_sheet',
-#                     "index": 0,
-#                 }
-#             }
-#         ]
-#     }
-#
-#     spreadsheet = service.spreadsheets().create(body=spreadsheet, fields='spreadsheetId').execute()
-#     return spreadsheet.get('spreadsheetId')
-
-
 def create_spreadsheet(service, title, sheets_names):
-    """
-    Create a new speadsheet
+    """Create a new speadsheet
 
-    :param service: Google Services object
-    :param title: Title of the spreadsheet
-    :param sheets_names: list with all names for tabs
-    :return: spreadsheet ID
+    Args:
+        service: Google Services object
+        title: Title of the spreadsheet
+        sheets_names: list with all names for tabs
+
+    Returns:
+        spreadsheet ID
     """
     sheets = []
     counter = 0
@@ -101,13 +83,16 @@ def create_spreadsheet(service, title, sheets_names):
 
 
 def write_single(service, spreadsheet_ID, range, values):
-    """
-    Write in the spreadsheet
-    :param service: Google services object
-    :param spreadsheet_ID: spreadsheet ID
-    :param range: range of cell where to write, using A1 notation
-    :param values: the information to be written in the spreadsheet
-    :return: string confirmation with amount of cells modified
+    """Write in the spreadsheet
+
+    Args:
+        service: Google services object
+        spreadsheet_ID: spreadsheet ID
+        range: range of cell where to write, using A1 notation
+        values: the information to be written in the spreadsheet
+
+    Returns:
+        string confirmation with amount of cells modified
     """
     values = generate_values(values)
     body = {
@@ -123,17 +108,24 @@ def write_single(service, spreadsheet_ID, range, values):
 
 
 def generate_values(raw_data):
+    """Take the raw data from newsapi and divided in columns and values, create a list of list containing the information.
+
+    Args:
+        raw_data: raw data.
+
+    Returns:
+        list of list, first item is the columns names, following lists is the data of the articles.
     """
-    Take the raw data from newsapi and divided in columns and values, create a list of list containing the information
-    :param raw_data: raw data
-    :return: list of list, first item is the columns names, following lists is the data of the articles
-    """
+
     news = [list(value.values()) for _, value in raw_data.items()]
     columns = list(raw_data[1].keys())
     return [columns] + news
 
 
 def update_sheet(services, SPREADSHEET_ID, sheet_id, news_title):
+    """ Update the spreadsheet
+
+    """
 
     requests = []
     requests.append({
@@ -154,7 +146,7 @@ def update_sheet(services, SPREADSHEET_ID, sheet_id, news_title):
         spreadsheetId=SPREADSHEET_ID,
         body=body
     ).execute()
-    # find_replace_response = response
+
     print(f'Sheet updated {response}')
 
 
