@@ -10,17 +10,20 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-import datetime
+
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+
+
+Colors = [{"red": 1, "green": 0, "blue": 0}]
 
 
 def fetch_service():
     """fetch the google service object
 
     Args:
-        None
+
 
     Returns:
         Google services object
@@ -66,6 +69,7 @@ def create_spreadsheet(service, title, sheets_names):
                     "sheetId": counter,
                     "title": sheet,
                     "index": counter,
+                    "tabColor": Colors[0]
                 }
             }
         counter += 1
@@ -82,12 +86,12 @@ def create_spreadsheet(service, title, sheets_names):
     return spreadsheet.get('spreadsheetId')
 
 
-def write_single(service, spreadsheet_ID, range, values):
+def write_single(service, spreadsheet_id, range, values):
     """Write in the spreadsheet
 
     Args:
         service: Google services object
-        spreadsheet_ID: spreadsheet ID
+        spreadsheet_id: spreadsheet ID
         range: range of cell where to write, using A1 notation
         values: the information to be written in the spreadsheet
 
@@ -99,7 +103,7 @@ def write_single(service, spreadsheet_ID, range, values):
         'values': values
     }
     result = service.spreadsheets().values().update(
-        spreadsheetId=spreadsheet_ID,
+        spreadsheetId=spreadsheet_id,
         range=range,
         valueInputOption='RAW',
         body=body
@@ -108,7 +112,7 @@ def write_single(service, spreadsheet_ID, range, values):
 
 
 def generate_values(raw_data):
-    """Take the raw data from newsapi and divided in columns and values, create a list of list containing the information.
+    """Take the raw data from newsapi and divided in columns & values, create a list of list containing the information.
 
     Args:
         raw_data: raw data.
@@ -122,12 +126,12 @@ def generate_values(raw_data):
     return [columns] + news
 
 
-def update_sheet(services, SPREADSHEET_ID, sheet_id, news_title):
+def update_sheet(services, spreadsheet_id, sheet_id, news_title):
     """ Update the spreadsheet
 
     """
 
-    requests = []
+    requests = list()
     requests.append({
         'updateSheetProperties': {
             'properties': {
@@ -143,10 +147,8 @@ def update_sheet(services, SPREADSHEET_ID, sheet_id, news_title):
     }
 
     response = services.spreadsheets().batchUpdate(
-        spreadsheetId=SPREADSHEET_ID,
+        spreadsheetId=spreadsheet_id,
         body=body
     ).execute()
 
     print(f'Sheet updated {response}')
-
-
