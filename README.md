@@ -33,7 +33,8 @@ A spreadsheet with different sheets, one sheet per topic. Each sheet contain the
 |:-----|:-------:|:----------|
 |0.1.0 | 20210914| Moving NewsAPI related code to independent file.|
 |0.2.0 | 20211011| Started using the unofficial python client for news API|
-|0.3.0 | 20211131| Pre-alpa: Fetch news and write them in a spreadsheet |
+|0.3.0 | 20211031| Pre-alpha: Fetch news and write them in a spreadsheet |
+|0.4.0 | 20211112| Pre-alpha v2: Moving the information to utilities script|
 
 ## Versioning
 
