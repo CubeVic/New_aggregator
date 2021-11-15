@@ -16,7 +16,7 @@ def display_news(all_news) -> dict:
     """
     news = {}
     id = int()
-    for i in all_news['articles'][:4]:
+    for i in all_news['articles'][:6]:
         id += 1
         i['source'] = "" if i['source']['name'] is None else i['source']['name']
         news[id] = i
@@ -46,9 +46,9 @@ def request_news(api, service, time_from, time_to, topics):
             print('New logs.txt file created')
 
     with open('logs.txt', '+r') as file:
-        logs = file.readline()
-        if f"{time_to}" in logs:
-            SPREADSHEET_ID = logs.split(':')[1].strip()
+        logs = file.readlines()
+        if f"{time_to}" in logs[-1]:
+            SPREADSHEET_ID = logs[-1].split(':')[1].strip()
         else:
             SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{time_to}', sheets_names=topics)
             print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
@@ -66,4 +66,4 @@ def request_news(api, service, time_from, time_to, topics):
 
         news = display_news(all_news)
 
-        gsheet.write_single(service, SPREADSHEET_ID, f'{topic}!A1:H5', news)
+        gsheet.write_single(service, SPREADSHEET_ID, f'{topic}!A1:H7', news)
