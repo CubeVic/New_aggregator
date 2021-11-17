@@ -122,7 +122,10 @@ def generate_values(raw_data):
     """
 
     news = [list(value.values()) for _, value in raw_data.items()]
-    columns = list(raw_data[1].keys())
+    try:
+        columns = list(raw_data[1].keys())
+    except KeyError:
+        columns = ["source", "author", "title", "description", "url", "publishedAt"]
     return [columns] + news
 
 

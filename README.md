@@ -15,7 +15,7 @@ A spreadsheet with different sheets, one sheet per topic. Each sheet contain the
 ## Getting Started
 
 1. Install the libraries.
-2. define the topics to search
+2. Define the topics to search
 3. Get the Google sheets API token as well as NewsAPI key.
 4. Execute the scrip.
 

@@ -4,6 +4,7 @@ Different functions to support the request
 import gsheet
 from os.path import exists
 
+domains = "reuters.com, cointelegraph.com, decrypt.co, forbes.com, coindesk.com, coinmarketcap.com, cardano.org, fantom.foundation, www.coinbureau.com  "
 
 def display_news(all_news) -> dict:
     """ Gather the result and filter the top 3 articles
@@ -60,6 +61,7 @@ def request_news(api, service, time_from, time_to, topics):
             q=topic,
             from_param=time_from,
             to=time_to,
+            domains=domains,
             language='en',
             sort_by='relevancy',
             page=1)
