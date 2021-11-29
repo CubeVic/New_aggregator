@@ -69,3 +69,4 @@ def request_news(api, service, time_from, time_to, topics):
         news = display_news(all_news)
 
         gsheet.write_single(service, SPREADSHEET_ID, f'{topic}!A1:H7', news)
+        return f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0" , news

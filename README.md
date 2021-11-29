@@ -17,15 +17,17 @@ A spreadsheet with different sheets, one sheet per topic. Each sheet contain the
 1. Install the libraries.
 2. Define the topics to search
 3. Get the Google sheets API token as well as NewsAPI key.
-4. Execute the scrip.
+4. Create Environment variable with the News API and the Telegram bot API.
+5. Execute the scrip.
 
 > for now the script contain hardcoded values, but again, this meant to be a personal project, I will work on it.
 
 
 ## Built With
 
-* [NewsAPI](https://newsapi.org/docs) - The News API
-* [Google Sheets](https://developers.google.com/sheets/api?hl=ru) - Sheets API
+* [NewsAPI](https://newsapi.org/docs) - The News API.
+* [Google Sheets](https://developers.google.com/sheets/api?hl=ru) - Sheets API.
+* [Telegram Bot](https://github.com/eternnoir/pyTelegramBotAPI) - Telegram Bot API python.
 
 ## Changelog
 
@@ -35,6 +37,7 @@ A spreadsheet with different sheets, one sheet per topic. Each sheet contain the
 |0.2.0 | 20211011| Started using the unofficial python client for news API|
 |0.3.0 | 20211031| Pre-alpha: Fetch news and write them in a spreadsheet |
 |0.4.0 | 20211112| Pre-alpha v2: Moving the information to utilities script|
+|0.5.0 | 20211129| Pre-alpha v3: Remove list of topics, implement telegram bot|
 
 ## Versioning
 
