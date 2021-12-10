@@ -15,8 +15,9 @@ bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
 def send_welcome(message):
 	global API
 	global SERVICE
+	SERVICE = ""
 	API = NewsApiClient(api_key=os.environ['APIKEY'])
-	SERVICE = gsheet.fetch_service()
+#	SERVICE = gsheet.fetch_service()
 	bot.reply_to(message, "type News follow by a key work, you will get back a list of the latest 5 news")
 
 
@@ -38,6 +39,8 @@ def get_news(message):
 	text = message.text.split()
 	_, key_word = text[0], " ".join(text[1:])
 	API = NewsApiClient(api_key=os.environ['APIKEY'])
+	#TODO: temporal solution to run on raspberry
+
 	link, news = request_news(api=API, service=SERVICE, time_from=older, time_to=today, topics=[key_word])
 	msg = f'{link}\n'
 	for n in news.values():

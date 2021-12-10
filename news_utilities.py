@@ -28,7 +28,7 @@ def display_news(all_news) -> dict:
 
 
 def request_news(api, service, time_from, time_to, topics):
-    """ Request the News
+    """ Request the Newspi
 
     Args:
         api: News api object
@@ -40,33 +40,47 @@ def request_news(api, service, time_from, time_to, topics):
     Returns:
         None
     """
+    if "" in service:
+        for topic in topics:
+            # fetch info
+            all_news = api.get_everything(
+                q=topic,
+                from_param=time_from,
+                to=time_to,
+                domains=domains,
+                language='en',
+                sort_by='relevancy',
+                page=1)
 
-    is_exist = exists('logs.txt')
-    if is_exist is False:
-        with open('logs.txt', 'w') as file:
-            print('New logs.txt file created')
+            news = display_news(all_news)
+        return f'skip google sheet', news
+    else:
+        is_exist = exists('logs.txt')
+        if is_exist is False:
+            with open('logs.txt', 'w') as file:
+                print('New logs.txt file created')
 
-    with open('logs.txt', '+r') as file:
-        logs = file.readlines()
-        if f"{time_to}" in logs[-1]:
-            SPREADSHEET_ID = logs[-1].split(':')[1].strip()
-        else:
-            SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{time_to}', sheets_names=topics)
-            print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
-            file.write(f"{time_to}:{SPREADSHEET_ID}\n")
+        with open('logs.txt', '+r') as file:
+            logs = file.readlines()
+            if f"{time_to}" in logs[-1]:
+                SPREADSHEET_ID = logs[-1].split(':')[1].strip()
+            else:
+                SPREADSHEET_ID = gsheet.create_spreadsheet(service=service, title=f'today_{time_to}', sheets_names=topics)
+                print(f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0")
+                file.write(f"{time_to}:{SPREADSHEET_ID}\n")
 
-    for topic in topics:
-        # fetch info
-        all_news = api.get_everything(
-            q=topic,
-            from_param=time_from,
-            to=time_to,
-            domains=domains,
-            language='en',
-            sort_by='relevancy',
-            page=1)
+        for topic in topics:
+            # fetch info
+            all_news = api.get_everything(
+                q=topic,
+                from_param=time_from,
+                to=time_to,
+                domains=domains,
+                language='en',
+                sort_by='relevancy',
+                page=1)
 
-        news = display_news(all_news)
+            news = display_news(all_news)
 
-        gsheet.write_single(service, SPREADSHEET_ID, f'{topic}!A1:H7', news)
-        return f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0" , news
+            gsheet.write_single(service, SPREADSHEET_ID, f'{topic}!A1:H7', news)
+            return f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit#gid=0" , news
