@@ -1,25 +1,28 @@
-from newsapi import NewsApiClient
-from news_utilities import fetch_news
+from news import Agreggator
+
 import os
 import datetime
 import telebot
-import emoji
 
 bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
-news_api = os.environ['NEWS_API']
+
+# TODO: Allow Client to change time frame.
+today = datetime.date.today()
+older = today - datetime.timedelta(days=4)
 
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-	global API
-	global SERVICE
-	SERVICE = ""
-	API = NewsApiClient(api_key=news_api)
+	"""bot start function"""
+	# Output to excel
+	# global SERVICE
+	# SERVICE = ""
 	bot.reply_to(message, "type News follow by a key work, you will get back a list of the latest 3 news")
 
 
 # validate the keyword, call get_news just if the message has news follow by the keywords
 def verify_key(message):
+	"""Verify the message start with News follow by a keyword"""
 	print(f' this is the message i getting: {message.text}')
 	text = message.text.split()
 	tag, key_word = text[0].lower(), " ".join(text[1:])
@@ -27,32 +30,34 @@ def verify_key(message):
 		return True
 
 
+def create_msg_bot(message, news):
+	"""separate the news articles on individual message bubbles"""
+	for new in news:
+		bot.send_message(message.chat.id, new)
+
+
 @bot.message_handler(func=verify_key)
 def get_news(message):
-	text = message.text.split()
+	"""Get the news """
 
+	# get the topics
+	text = message.text.split()
 	_, key_words = text[0], text[1:]
 
-	API = NewsApiClient(api_key=news_api)
+	# call the object aggregator that contain the topics and the news
+	news = Agreggator(
+		topics=key_words,
+		newsapi_key=os.environ['NEWS_API'],
+		from_time=older,
+		to_time=today
+	)
 
-	news = fetch_news(news_api=API, list_topics=key_words)
-
-	msg = ""
-	for key, content in news.items():
-		msg = f'{"#"*8}\n'
-		msg += f'{key.upper()}\n'
-		for i in content['article']:
-			msg += f'\N{hourglass} '
-			msg += f'{i["published"]}\n'
-			msg += f"\N{personal computer}"
-			msg += f'{i["source_name"]}\n'
-			msg += f'\N{postal horn} {i["title"]}\n'
-			msg += f'\N{newspaper} {i["description"]}\n'
-			msg += f'\N{link symbol} {i["url"]}\n'
-			msg += f'>>>>>>>>>>>>>>>>>>>>>>>>>>\n'
-			print(i)
-		print(msg)
-	bot.send_message(message.chat.id, msg)
+	# get the articles
+	msg = news.get_news()
+	for topics, news in msg.items():
+		bot.send_message(message.chat.id, topics)
+		create_msg_bot(message=message, news=news)
 
 
+# keep the bot running
 bot.infinity_polling()
