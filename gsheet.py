@@ -111,6 +111,7 @@ def write_single(service, spreadsheet_id, range, values):
     print(f"{result.get('updatedCells')} cells updated.\n range: {range}")
 
 
+#TODO: This funtion use the items of the mews articles to create the columns in the spread sheet do i need to hard code it?
 def generate_values(raw_data):
     """Take the raw data from newsapi and divided in columns & values, create a list of list containing the information.
 

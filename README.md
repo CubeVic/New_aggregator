@@ -5,12 +5,18 @@ News aggregator that fetch news form Newsapi and writhe the results in a Google 
 
 ## Why I want News aggregator
 
-Every morning I read news, to find the news I browse several sites, and in some cases end spending more time scrolling o the sites that reading the news.  
+Every morning I read the news to find the news articles. I browse several sites, 
+so I spend lots of time scrolling and navigating the web looking for those news articles. 
+
+But clickbait and inflammatory titles sometimes get me to boring hallow articles.
+
+I need a way to get articles from specific sources and a summary so i can decide if i should skip them.
 
 ## The Idea
-![The_idea](The_idea.png)
+Use News API as a source of articles and use telegram as a delivery method.
 
-A spreadsheet with different sheets, one sheet per topic. Each sheet contain the 4 most relevant news about a topic. In the sheet each row will represent and article, there will be columns with information such as author, source, summery and link to the full article.
+I will use a telegram bot where i can type the keywords related to the topics I want news from, 
+in the same telegram chat, I will get a list of 3 articles per topic, with a summary and a link to the original article
 
 ## Getting Started
 
@@ -26,7 +32,7 @@ A spreadsheet with different sheets, one sheet per topic. Each sheet contain the
 ## Built With
 
 * [NewsAPI](https://newsapi.org/docs) - The News API.
-* [Google Sheets](https://developers.google.com/sheets/api?hl=ru) - Sheets API.
+* [Google Sheets](https://developers.google.com/sheets/api?hl=ru) - Sheets API. (disabled)
 * [Telegram Bot](https://github.com/eternnoir/pyTelegramBotAPI) - Telegram Bot API python.
 
 ## Changelog
@@ -39,6 +45,7 @@ A spreadsheet with different sheets, one sheet per topic. Each sheet contain the
 | 0.4.0   | 20211112| Pre-alpha v2: Moving the information to utilities script|
 | 0.5.0   | 20211129| Pre-alpha v3: Remove list of topics, implement telegram bot|
 | 0.6.0   | 20220502| Pre-alpha v4: Disable excel client, changing telegram bot implementation|
+| 0.6.5   | 20220506| pre-alpha v4.5: News class create, boot class updated |
 
 ## Versioning
 
