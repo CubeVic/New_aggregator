@@ -5,12 +5,11 @@ News aggregator that fetch news form Newsapi and writhe the results in a Google 
 
 ## Why I want News aggregator
 
-Every morning I read the news to find the news articles. I browse several sites, 
-so I spend lots of time scrolling and navigating the web looking for those news articles. 
+Every morning I read the news, to find the news articles, I browse several sites. 
+I spend lots of time scrolling and navigating the web looking for those news articles, but clickbait and inflammatory 
+titles sometimes get me, and I ended wasting time in boring hallow articles.
 
-But clickbait and inflammatory titles sometimes get me to boring hallow articles.
-
-I need a way to get articles from specific sources and a summary so i can decide if i should skip them.
+I need a way to get articles from specific sources and a summary, so I can decide if i should skip them.
 
 ## The Idea
 Use News API as a source of articles and use telegram as a delivery method.
@@ -26,7 +25,8 @@ in the same telegram chat, I will get a list of 3 articles per topic, with a sum
 4. Create Environment variable with the News API and the Telegram bot API.
 5. Execute the scrip.
 
-> for now the script contain hardcoded values, but again, this meant to be a personal project, I will work on it.
+> for now, the script contains hardcoded values, but again, this is a personal project rather than a commercial,  
+> I will work on it.
 
 
 ## Built With
