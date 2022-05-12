@@ -22,9 +22,11 @@ def configure_loger():
 	return logger_newsapi
 
 
-@dataclass
+@dataclass()
 class Article:
 	"""Represent the articles to be delivered as a response"""
+	__slots__ = ['source_name','author','title','description','published','url']
+
 	source_name: str
 	author: str
 	title: str
@@ -51,13 +53,16 @@ class Article:
 
 class Aggregator:
 	"""Represent the request for news articles and the parsing of the response"""
+
+	__slots__ = ['topics', 'newsapi', 'from_time', 'to_time','domains']
+
 	topics: [str]
 	newsapi: NewsApiClient
 	from_time: str
 	to_time: str
 	# TODO: Allow client to change sources
 	domains: str
-	logger = configure_loger()
+	aggregator_logger = configure_loger()
 
 	def __init__(self, topics_of_interest, newsapi_key, from_time, to_time, ):
 		config = configparser.ConfigParser()
@@ -109,14 +114,14 @@ class Aggregator:
 				sort_by='relevancy',
 				page=1
 			)
-			self.logger.debug(msg=f'Fetching articles topic {topic} status: {new["status"]}')
+			self.aggregator_logger.debug(msg=f'Fetching articles topic {topic} status: {new["status"]}')
 			filtered_articles = self._filter_articles(new)
 			news_articles = self._parse_articles(filtered_articles)
 
 		except NewsAPIException as e:
-			self.logger.error(msg=f'error information \n{e}')
+			self.aggregator_logger.error(msg=f'error information \n{e}')
 		except UnboundLocalError as e:
-			self.logger.error(msg=f'error {e}')
+			self.aggregator_logger.error(msg=f'error {e}')
 
 		return news_articles
 
