@@ -67,16 +67,16 @@ class Aggregator:
 	def __init__(self, topics_of_interest, newsapi_key, from_time, to_time, ):
 		config = configparser.ConfigParser()
 		config.read('configuration.ini')
-		self.configurations = config['NEWS']
+		configurations = config['NEWS']
 		logging.debug(msg=f'Creating Aggregator class')
 		self.topics = topics_of_interest
 		self.from_time = from_time
 		self.to_time = to_time
-		self.domains = self._define_domains()
+		self.domains = self._define_domains(configuration=configurations)
 		self.newsapi = NewsApiClient(api_key=newsapi_key)
 
-	def _define_domains(self):
-		domain_from_config_file = self.configurations['sources']
+	def _define_domains(self, configuration):
+		domain_from_config_file = configuration['sources']
 		return domain_from_config_file
 
 	@staticmethod
