@@ -1,1 +1,2 @@
 pyTelegramBotAPI==4.2.0
+newsapi-python==0.2.6
