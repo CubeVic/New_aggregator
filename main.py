@@ -8,7 +8,7 @@ from telebot import types
 import logging
 
 
-def configure_loger():
+def configure_logger():
 	"""Configure Logger"""
 	global logger
 	logger = logging.getLogger(__name__)
@@ -25,17 +25,25 @@ def configure_loger():
 
 
 bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
+# bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
+
 
 # TODO: Allow Client to change time frame.
 today = datetime.date.today()
 older = today - datetime.timedelta(days=4)
 
-#
-# class MainFilter(telebot.custom_filters.AdvancedCustomFilter):
-#     key='text'
-#     @staticmethod
-#     def check(message, text):
-#         return message.text in text
+
+class MainFilter(telebot.custom_filters.AdvancedCustomFilter):
+	"""Custom filter"""
+	key = 'text'
+
+	@staticmethod
+	def check(message, text):
+		"""
+			Args:
+			text (object):
+		"""
+		return message.text in text
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -128,13 +136,12 @@ def bot_get_news(message):
 # 	print(f'i got it ')
 
 #registering the custom filter
-# bot.add_custom_filter(MainFilter())
-# bot.add_custom_filter(OtherFilter())
-#
+bot.add_custom_filter(MainFilter())
+
 
 
 def main():
-	configure_loger()
+	configure_logger()
 	# keep the bot running
 	bot.infinity_polling()
 
