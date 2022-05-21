@@ -122,12 +122,13 @@ def get_domain(message):
 
 
 def request_new_domains(message):
-	bot.send_message(chat_id=message.chat.id, text="Add new domain(s) (example of domain forbes.com) more than one domains? use commas.")
+	explanation_text = "Add new domain(s) (example of domain forbes.com) more than one domains? use commas."
+	bot.send_message(chat_id=message.chat.id, text=explanation_text)
 	bot.register_next_step_handler(message=message, callback=prepare_new_domain)
 
 
 def prepare_new_domain(message):
-	print(f'yes im here {message.text}')
+
 	domains_to_add,  incorrect_domains = utilities.prepare_new_domains_to_add(message=message)
 	list_domains_to_add = ', '.join(domains_to_add)
 
