@@ -1,5 +1,6 @@
 import configparser
 
+import utilities
 from news import Aggregator
 import os
 import datetime
@@ -24,8 +25,8 @@ def configure_logger():
 	logger.addHandler(stream_handler)
 
 
-bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
 # bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
+bot = telebot.TeleBot(token=os.environ['BOTAPIKEY_dev'])
 
 
 # TODO: Allow Client to change time frame.
@@ -34,17 +35,11 @@ older = today - datetime.timedelta(days=4)
 
 
 class MainFilter(telebot.custom_filters.AdvancedCustomFilter):
-	"""Custom filter"""
 	key = 'text'
-
 	@staticmethod
 	def check(message, text):
-		"""
-			Args:
-			text (object):
-		"""
+		logger.debug(f'message comes from the message {message.text} and text come from the decorator {text}')
 		return message.text in text
-
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
@@ -56,10 +51,9 @@ def send_welcome(message):
 def verify_key(message):
 	"""Verify the message start with News follow by a keyword"""
 	logger.debug(msg=f'string receive: {message.text}')
-	print(message.reply_to_message)
 	text = message.text.split()
 	tag, key_word = text[0].lower(), " ".join(text[1:])
-	if tag in 'news' and len(key_word) > 1:
+	if tag in ('news', 'News') and len(key_word) > 1:
 		return True
 
 
@@ -70,6 +64,7 @@ def bot_create_msg(message, news):
 		bot.send_message(message.chat.id, new, disable_web_page_preview=True)
 
 
+@bot.message_handler(commands=['news', 'News'])
 @bot.message_handler(func=verify_key)
 def bot_get_news(message):
 	"""Get the news """
@@ -94,46 +89,54 @@ def bot_get_news(message):
 		bot_create_msg(message=message, news=news)
 
 
-# @bot.message_handler(text=['option', 'Options'])
-# @bot.message_handler(commands=['options', 'Options'])
-# def bot_options(message):
-# 	markup = types.ReplyKeyboardMarkup(row_width=2,one_time_keyboard=True)
-# 	options_domains = types.KeyboardButton('Domains')
-# 	options_old_articles = types.KeyboardButton('time frame')
-# 	options_add_domains = types.KeyboardButton('ADD Domains')
-# 	markup.add(options_domains,options_old_articles, options_add_domains)
-# 	bot.send_message(chat_id=message.chat.id, text="Options", reply_markup=markup)
-
-#
-# def read_configuration_file(config_key):
-# 	"""Read the configuration files and get back the value of the key provided"""
-# 	config = configparser.ConfigParser()
-# 	config.read('configuration.ini')
-# 	configurations = config['NEWS']
-# 	return configurations[config_key]
+def options_screen() -> types.ReplyKeyboardMarkup:
+	markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True)
+	options_domains = types.KeyboardButton('Domains')
+	options_old_articles = types.KeyboardButton('time frame')
+	options_add_domains = types.KeyboardButton('Add Domains')
+	markup.add(options_domains, options_old_articles, options_add_domains)
+	return markup
 
 
-# @bot.message_handler(func=lambda message: True if message.text == "Domains" else False)
-# def get_domain(message):
-# 	"""Will get the domains currently use to get the news"""
-# 	# Keep confusing name domain or sources, because the sources are domains, sub-domain do not work.
-# 	domains_or_sources = read_configuration_file("sources").replace('"', '')
-# 	bot.send_message(message.chat.id, domains_or_sources,)
+@bot.message_handler(text=['options', 'Options', 'option', 'Option'])
+@bot.message_handler(commands=['options', 'Options'])
+def bot_options(message):
+	markup = options_screen()
+	bot.send_message(chat_id=message.chat.id, text="These are your options:", reply_markup=markup)
+	bot.register_next_step_handler(message=message,callback=select_options)
 
 
-# @bot.message_handler(func=lambda message: True if message.text == "ADD Domains" else False)
-# def set_domain(message):
-# 	get_domain(message=message)
-# 	config = configparser.ConfigParser()
-# 	config.read('configuration.ini')
-# 	configurations = config['NEWS']
-# 	markup = types.ForceReply(input_field_placeholder=configurations['sources'])
-# 	print(markup.to_json())
-# 	bot.send_message(chat_id=message.chat.id, text="sources", reply_markup=markup)
+def select_options(message):
 
-# @bot.message_handler(add_domains=['ADD Domains'])
-# def response(message):
-# 	print(f'i got it ')
+	if message.text in ("Domains"):
+		get_domain(message)
+	elif message.text in ("Add Domains"):
+		request_new_domains(message)
+
+
+def get_domain(message):
+	"""Will get the domains currently use to get the news"""
+	# Keep confusing name domain or sources, because the sources are domains, sub-domain do not work.
+	domains_or_sources = utilities.read_configuration_file("sources").replace('"', '')
+	bot.send_message(message.chat.id, domains_or_sources)
+
+
+def request_new_domains(message):
+	bot.send_message(chat_id=message.chat.id, text="Add new domain(s) (example of domain forbes.com) more than one domains? use commas.")
+	bot.register_next_step_handler(message=message, callback=prepare_new_domain)
+
+
+def prepare_new_domain(message):
+	print(f'yes im here {message.text}')
+	domains_to_add,  incorrect_domains = utilities.prepare_new_domains_to_add(message=message)
+	list_domains_to_add = ', '.join(domains_to_add)
+
+	bot.send_message(chat_id=message.chat.id,text=f"added domain(s)\n{list_domains_to_add}")
+	if len(incorrect_domains) > 0:
+		bot.send_message(chat_id=message.chat.id,text=f"domain(s) not added\n{', '.join(incorrect_domains)}")
+	utilities.save_configuration_file(config_key="sources", value=list_domains_to_add)
+
+
 
 #registering the custom filter
 bot.add_custom_filter(MainFilter())
