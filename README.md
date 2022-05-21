@@ -28,6 +28,7 @@ in the same telegram chat, I will get a list of 3 articles per topic, with a sum
 > for now, the script contains hardcoded values, but again, this is a personal project rather than a commercial,  
 > I will work on it.
 
+![Bot_working](bot_working.gif) ![Bot_options](bot_alpha.gif)
 
 ## Built With
 
@@ -46,6 +47,7 @@ in the same telegram chat, I will get a list of 3 articles per topic, with a sum
 | 0.5.0   | 20211129| Pre-alpha v3: Remove list of topics, implement telegram bot|
 | 0.6.0   | 20220502| Pre-alpha v4: Disable excel client, changing telegram bot implementation|
 | 0.6.5   | 20220506| pre-alpha v4.5: News class create, boot class updated |
+| 0.7.0   | 20220521| alpha v1: Bot capable to change sources for the articles and timeframe|
 
 ## Versioning
 

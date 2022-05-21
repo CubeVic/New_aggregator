@@ -25,8 +25,7 @@ def configure_logger():
 	logger.addHandler(stream_handler)
 
 
-# bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
-bot = telebot.TeleBot(token=os.environ['BOTAPIKEY_dev'])
+bot = telebot.TeleBot(token=os.environ['BOTAPIKEY'])
 
 
 class MainFilter(telebot.custom_filters.AdvancedCustomFilter):
