@@ -1,4 +1,4 @@
-from telebot import TeleBot, custom_filters, types
+from telebot import TeleBot, custom_filters
 
 from news_bot import utilities
 from news_bot.news import Aggregator
@@ -31,6 +31,7 @@ bot = TeleBot(token=os.environ['BOTAPIKEY'])
 class MainFilter(custom_filters.AdvancedCustomFilter):
 	"""Custom filter to be use on message handler with the keyword 'text'"""
 	key = 'text'
+
 	@staticmethod
 	def check(message, text):
 		logger.debug(f'message comes from the message {message.text} and text come from the decorator {text}')
@@ -213,15 +214,15 @@ def get_domain(message):
 # 	bot.register_next_step_handler(message=message, callback=send_welcome)
 #
 #
-#registering the custom filter
-bot.add_custom_filter(MainFilter())
 
+# registering the custom filter
+bot.add_custom_filter(MainFilter())
 
 
 def main():
 	configure_logger()
 
-	#Todo: find a way to read the handle.save
+	# Todo: find a way to read the handle.save
 	# bot.enable_save_next_step_handlers(delay=2)
 	# bot.load_next_step_handlers()
 

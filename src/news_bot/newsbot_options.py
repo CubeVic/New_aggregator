@@ -97,9 +97,6 @@ class OptionsBot:
 		self.bot.send_message(chat_id=message.chat.id, text=f"{new_date} days set.")
 		self.bot.send_message(chat_id=message.chat.id, text="/start")
 
-		# Send /start to the chat
-		# self.bot.register_next_step_handler(message=message, callback=self.send_welcome)
-
 	def option_path(self, message):
 		markup = self.options_screen()
 		self.bot.send_message(chat_id=message.chat.id, text="These are your options:", reply_markup=markup)
