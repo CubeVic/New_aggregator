@@ -25,7 +25,7 @@ def configure_loger():
 @dataclass()
 class Article:
 	"""Represent the articles to be delivered as a response"""
-	__slots__ = ['source_name','author','title','description','published','url']
+	__slots__ = ['source_name', 'author', 'title', 'description', 'published', 'url']
 
 	source_name: str
 	author: str
@@ -54,7 +54,7 @@ class Article:
 class Aggregator:
 	"""Represent the request for news articles and the parsing of the response"""
 
-	__slots__ = ['topics', 'newsapi', 'from_time', 'to_time','domains']
+	__slots__ = ['topics', 'newsapi', 'from_time', 'to_time', 'domains']
 
 	topics: [str]
 	newsapi: NewsApiClient
@@ -75,7 +75,8 @@ class Aggregator:
 		self.domains = self._define_domains(configuration=configurations)
 		self.newsapi = NewsApiClient(api_key=newsapi_key)
 
-	def _define_domains(self, configuration):
+	@staticmethod
+	def _define_domains(configuration):
 		domain_from_config_file = configuration['sources']
 		return domain_from_config_file
 
@@ -132,4 +133,3 @@ class Aggregator:
 			news_articles = self.fetch_articles(topic=topic)
 			list_articles[topic] = news_articles
 		return list_articles
-

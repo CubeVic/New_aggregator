@@ -17,6 +17,7 @@ def read_configuration_file(config_key):
 	"""Read the configuration files and get back the value of the key provided"""
 
 	_, configurations = get_configuration_file('configuration.ini', 'NEWS')
+	# _, configurations = get_configuration_file('', 'NEWS')
 	return configurations[config_key]
 
 
