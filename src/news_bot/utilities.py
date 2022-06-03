@@ -1,7 +1,10 @@
 """Functions to help the bot, parce, configuration loader """
 import configparser
 import datetime
+import logging
 import re
+
+from telebot import custom_filters
 
 
 def get_configuration_file(name, section):
@@ -13,26 +16,29 @@ def get_configuration_file(name, section):
 	return config, configurations
 
 
-def read_configuration_file(config_key):
+def read_configuration_file(config_key, file='../configuration.ini', ):
 	"""Read the configuration files and get back the value of the key provided"""
 
-	_, configurations = get_configuration_file('configuration.ini', 'NEWS')
-	# _, configurations = get_configuration_file('', 'NEWS')
-	return configurations[config_key]
+	config, configurations = get_configuration_file(file, 'NEWS')
+	return config, configurations[config_key]
 
 
 def save_configuration_file(config_key, value):
-	"""Read the configuration files and get back the value of the key provided"""
+	"""Read the configuration files and get back the value of the key provided
 
-	config, configurations = get_configuration_file('configuration.ini', 'NEWS')
-	old_value = read_configuration_file(config_key).replace('"',"")
+	TODO: Refactoring the Get_configuration_file()
+	"""
+
+	config, configurations = get_configuration_file('../configuration.ini', 'NEWS')
+	_, old_value = read_configuration_file(config_key)
+	old_value = old_value.replace('"',"")
 
 	if config_key in ('days_old'):
 		configurations[config_key] = f'{value}'
 	else:
 		configurations[config_key] = f'"{old_value} , {value}"'
 
-	with open('configuration.ini', 'w') as configfile:
+	with open('../configuration.ini', 'w') as configfile:
 		config.write(configfile)
 
 
@@ -57,7 +63,34 @@ def prepare_new_domains_to_add(message) -> (list, list):
 
 def get_timeframe() -> (datetime.datetime, datetime.datetime):
 	"""Get the time frame for the news articles """
-	config_days_old = int(read_configuration_file('days_old'))
+	_, value_configuration = read_configuration_file('days_old')
+	config_days_old = int(value_configuration)
 	today = datetime.date.today()
 	older = today - datetime.timedelta(days=config_days_old)
 	return today, older
+
+
+def configure_logger():
+	"""Configure Logger"""
+	logger = logging.getLogger(__name__)
+	logger.setLevel(logging.DEBUG)
+
+	stream_formatter = logging.Formatter(
+						fmt='%(asctime)s - %(message)s',
+						datefmt='%d-%b-%y %H:%M:%S')
+
+	stream_handler = logging.StreamHandler()
+	stream_handler.setFormatter(stream_formatter)
+
+	logger.addHandler(stream_handler)
+	return logger
+
+
+class MainFilter(custom_filters.AdvancedCustomFilter):
+	"""Custom filter to be use on message handler with the keyword 'text'"""
+	key = 'text'
+
+	@staticmethod
+	def check(message, text):
+		# logger.debug(f'message comes from the message {message.text} and text come from the decorator {text}')
+		return message.text in text

@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from newsapi import NewsApiClient
 from newsapi.newsapi_exception import NewsAPIException
 
+from src.news_bot.utilities import get_configuration_file
+
 
 def configure_loger():
 	"""Configure Logger"""
@@ -65,9 +67,7 @@ class Aggregator:
 	aggregator_logger = configure_loger()
 
 	def __init__(self, topics_of_interest, newsapi_key, from_time, to_time, ):
-		config = configparser.ConfigParser()
-		config.read('configuration.ini')
-		configurations = config['NEWS']
+		_, configurations = get_configuration_file(name='../configuration.ini', section='NEWS')
 		logging.debug(msg=f'Creating Aggregator class')
 		self.topics = topics_of_interest
 		self.from_time = from_time

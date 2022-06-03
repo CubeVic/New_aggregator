@@ -1,12 +1,12 @@
 from telebot import types
-from news_bot import utilities
+from src.news_bot import utilities
 
 
 class OptionsBot:
 
-	def __init__(self, my_bot, bot_filter):
+	def __init__(self, my_bot):
 		self.bot = my_bot
-		self.bot.add_custom_filter(bot_filter)
+		self.bot.add_custom_filter(utilities.MainFilter())
 		self.bot.register_message_handler(self.get_domain, commands=['domains', 'domain', 'Domains', 'Domain'])
 		self.bot.register_message_handler(self.get_domain, text=['domains', 'domain', 'Domains', 'Domain'])
 		self.bot.register_message_handler(self.prepare_time_frame, commands=['timeframe', 'Timeframe'])
@@ -34,7 +34,8 @@ class OptionsBot:
 	def get_domain(self, message):
 		"""Will get the domains currently use to get the news"""
 		# Keep confusing name domain or sources, because the sources are domains, sub-domain do not work.
-		domains_or_sources = utilities.read_configuration_file("sources").replace('"', '')
+		_, domains_or_sources = utilities.read_configuration_file("sources")
+		domains_or_sources = domains_or_sources.replace('"', '')
 		self.bot.send_message(message.chat.id, domains_or_sources)
 
 	def request_new_domains(self, message):
@@ -66,7 +67,7 @@ class OptionsBot:
 
 	def prepare_time_frame(self, message):
 		"""Report current timeframe set up"""
-		days_old = utilities.read_configuration_file('days_old')
+		_, days_old = utilities.read_configuration_file('days_old')
 		explanation_text = f"bot search maximum of {days_old} days old news.\ndo you want to change this number?"
 		markup = self.is_date_change()
 		self.bot.send_message(chat_id=message.chat.id, text=explanation_text, reply_markup=markup)
